@@ -83,6 +83,8 @@ int main(int argc, const char ** argv)
       //if (++count % 3 == 0 )
         check_confidence(frame1, cascade);
 
+     imshow("Webcam", frame1);
+
       char c = (char)waitKey(33);
       if(c == 'q' || c == 'Q' ) {
         std::cout << "Quit" << std::endl;
