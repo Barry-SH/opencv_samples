@@ -27,6 +27,7 @@ int main(int argc, const char ** argv)
 {
   VideoCapture capture;
   Mat frame;
+  uint64_t count = 0;
 
   if (!capture.open(0, CAP_V4L2)) {
     std::cerr << "Cannot open camera 0 !" << std::endl;
@@ -35,6 +36,32 @@ int main(int argc, const char ** argv)
 
   if (capture.isOpened()) {
     std::cout << "Video capturing has been started ..." << std::endl;
+
+    if (!capture.set(CAP_PROP_FOURCC, VideoWriter::fourcc('M', 'J', 'P', 'G'))) {
+      std::cerr << "Failed to set CV_CAP_PROP_FOURCC !" << std::endl;
+      return 1;
+    }
+
+    if (!capture.set(CAP_PROP_FRAME_WIDTH, 1280)) {
+      std::cerr << "Failed to set CAP_PROP_FRAME_WIDTH !" << std::endl;
+  return 1;
+    }
+
+    if (!capture.set(CAP_PROP_FRAME_HEIGHT, 720)) {
+      std::cerr << "Failed to set CAP_PROP_FRAME_HEIGHT !" << std::endl;
+  return 1;
+    }
+
+    if (!capture.set(CAP_PROP_FPS, 30)) {
+      std::cerr << "Failed to set CAP_PROP_FPS !" << std::endl;
+  return 1;
+    }
+
+    int width = (int) capture.get(CAP_PROP_FRAME_WIDTH);
+    int height = (int) capture.get(CAP_PROP_FRAME_HEIGHT);
+    double fps = capture.get(CAP_PROP_FPS);
+
+    std::printf("Vide size: %d x %d (fps: %f)\n", width, height, fps);
 
     CascadeClassifier cascade("/usr/share/opencv4/haarcascades/haarcascade_frontalface_default.xml");
 
@@ -53,9 +80,10 @@ int main(int argc, const char ** argv)
 
       Mat frame1 = frame.clone();
 
-      check_confidence(frame1, cascade);
+      //if (++count % 3 == 0 )
+        check_confidence(frame1, cascade);
 
-      char c = (char)waitKey(10);
+      char c = (char)waitKey(33);
       if(c == 'q' || c == 'Q' ) {
         std::cout << "Quit" << std::endl;
         break;
@@ -65,6 +93,5 @@ int main(int argc, const char ** argv)
     capture.release();
     return 0;
   }
-
-
 }
+
