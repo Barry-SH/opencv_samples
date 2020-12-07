@@ -44,17 +44,17 @@ int main(int argc, const char ** argv)
 
     if (!capture.set(CAP_PROP_FRAME_WIDTH, 1280)) {
       std::cerr << "Failed to set CAP_PROP_FRAME_WIDTH !" << std::endl;
-  return 1;
+      return 1;
     }
 
     if (!capture.set(CAP_PROP_FRAME_HEIGHT, 720)) {
       std::cerr << "Failed to set CAP_PROP_FRAME_HEIGHT !" << std::endl;
-  return 1;
+      return 1;
     }
 
     if (!capture.set(CAP_PROP_FPS, 30)) {
       std::cerr << "Failed to set CAP_PROP_FPS !" << std::endl;
-  return 1;
+      return 1;
     }
 
     int width = (int) capture.get(CAP_PROP_FRAME_WIDTH);
@@ -78,12 +78,12 @@ int main(int argc, const char ** argv)
         break;
       }
 
-      Mat frame1 = frame.clone();
+      //Mat frame1 = frame.clone();
 
       //if (++count % 3 == 0 )
-        check_confidence(frame1, cascade);
+        check_confidence(frame, cascade);
 
-     imshow("Webcam", frame1);
+      imshow("Webcam", frame);
 
       char c = (char)waitKey(33);
       if(c == 'q' || c == 'Q' ) {
